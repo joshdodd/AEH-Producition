@@ -14,7 +14,9 @@ foreach($members as $member){
 	foreach($first as $user){
 		$id	= $user['user_id'];
 		$user_info = get_userdata($id);
-		$user_avatar = get_avatar($id); ?>
+		$user_avatar = get_avatar($id); 
+		if($id == 2 )continue; 
+		?>
 
 		<div class="group-memberavatar">
 			<span class="group-membername"><?php echo $user_info->user_firstname.' ' .$user_info->user_lastname; ?></span>
@@ -27,7 +29,8 @@ foreach($members as $member){
 		foreach($second as $user){
 			$id	= $user['user_id'];
 			$user_info = get_userdata($id);
-			$user_avatar = get_avatar($id); ?>
+			$user_avatar = get_avatar($id); 
+			if($id == 2 )continue; ?>
 
 			<div class="group-memberavatar">
 				<span class="group-membername"><?php echo $user_info->user_firstname.' ' .$user_info->user_lastname; ?></span>

@@ -17,7 +17,7 @@
 
 
 	$args = array(
-		'post_type' => array('quality','institute','post'),
+		'post_type' => array('policy','institute','quality','post'),
 		'qualitytopics' => $ajaxFilter,
 	);
 	query_posts( $args );

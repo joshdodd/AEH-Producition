@@ -34,10 +34,10 @@
 		$twitter_style_dates = true){           // Twitter style days. [about an hour ago] (Default : true)
 
 		// Twitter keys (You'll need to visit https://dev.twitter.com and register to get these.
-		$consumerkey         = "U3l7Ag4z3sF377eyYcozw";
-		$consumersecret      = "Epn2PNk6WnjF4aBIkL7SLb3d7P1t2L8pAp5sJJAb2hc";
-		$accesstoken         = "182446074-rzuCpzcugm25xMB7trSocVLZVxzxSyalUadNGR1z";
-		$accesstokensecret   = "JmfOTp3GfdN5DMKJWMTt7GeYAeumvJ5IQekLpBOPTCC06";
+		$consumerkey         = "WjB3zT8xtKmV8c11fzQpozhb4";
+		$consumersecret      = "o7WQC3QO9OMjkTisqBxaRVXgZC2cbiZ9a7pWB0T2nAh9a7a5Mk";
+		$accesstoken         = "81412512-JzOHiVaGX9kSF8Q0nRfV1BuZiJn8VRsM3i3gjTKAv";
+		$accesstokensecret   = "pDQPiivxEJMD8moMmmj48jlRFs32jye6DOnEXHcTnB861";
 
 		// Seconds to cache feed (Default : 1 minute).
 		$cachetime           = 60*3;
@@ -161,10 +161,10 @@
 		$twitter_style_dates = true){           // Twitter style days. [about an hour ago] (Default : true)
 
 		// Twitter keys (You'll need to visit https://dev.twitter.com and register to get these.
-		$consumerkey         = "U3l7Ag4z3sF377eyYcozw";
-		$consumersecret      = "Epn2PNk6WnjF4aBIkL7SLb3d7P1t2L8pAp5sJJAb2hc";
-		$accesstoken         = "182446074-rzuCpzcugm25xMB7trSocVLZVxzxSyalUadNGR1z";
-		$accesstokensecret   = "JmfOTp3GfdN5DMKJWMTt7GeYAeumvJ5IQekLpBOPTCC06";
+		$consumerkey         = "WjB3zT8xtKmV8c11fzQpozhb4";
+		$consumersecret      = "o7WQC3QO9OMjkTisqBxaRVXgZC2cbiZ9a7pWB0T2nAh9a7a5Mk";
+		$accesstoken         = "81412512-JzOHiVaGX9kSF8Q0nRfV1BuZiJn8VRsM3i3gjTKAv";
+		$accesstokensecret   = "pDQPiivxEJMD8moMmmj48jlRFs32jye6DOnEXHcTnB861";
 
 		// Seconds to cache feed (Default : 1 minute).
 		$cachetime           = 60*3;

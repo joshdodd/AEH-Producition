@@ -4,7 +4,8 @@
 	require_once('../../../../wp-load.php');
 
 	//Get variable from AJAX POST
-	$taxFilter = $_POST['taxFilter'];
+	//$taxFilter = $_POST['taxFilter'];
+	$taxFilter = 'tag';
 	$typeFilter = $_POST['ajaxFilter'];
 	$termFilter = $_POST['archiveFilter'];
 
@@ -16,13 +17,7 @@
 	$args = array(
 		'posts_per_page' => '-1',
 		'post_type' 	 => $typeFilter,
-		'tax_query'		 => array(
-			array(
-				'taxonomy' => $taxFilter,
-				'field'	   => 'slug',
-				'terms'    => $termFilter
-			)
-		)
+		'tag_slug__in' =>  $termFilter
 	);
 	query_posts( $args ); if(have_posts()){ while ( have_posts() ) { the_post();
 		$postTitle = get_the_title();
@@ -41,6 +36,15 @@
 		$postTags = get_the_tags();
 
 		$postType = get_post_type( get_the_ID() );
+
+		if($postType == 'presentation'){
+			$presType = true;
+			$event = get_post_meta(get_the_ID(),'event',true);
+			$file_link = get_post_meta(get_the_ID(),'file',true);
+			$postLink = wp_get_attachment_url($file_link);
+			$postType = get_post_meta($event,'section',true);
+			
+		}
 
 		//check post type and apply a color
 		if($postType == 'policy'){

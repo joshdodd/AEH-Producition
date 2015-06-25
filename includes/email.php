@@ -38,12 +38,12 @@
 		$subject = "Please address: new comment(s) on $postTitle";
 		$message = "A user has commented on the post $postTitle, published $commentDate<br><br>
 					$commentContent<br><br>
-					<a href='$adminURL/comment.php?action=editcomment&c=$commentID'>Approve or delete this comment</a>
+					<a href='$adminURL/comment.php?action=editcomment&c=$commentID'>Review this comment</a>
 					<br><br>
 					<a href='$adminURL/edit-comments.php'>View all recent comments</a>
 					<br><br>
 					The above comment may be hidden until you or another web admin approves it. If this user previously posted comments that were approved, this comment will have been automatically approved and is already visible. Review this comment regardless, as action may be necessary. ";
-		$headers = "From: $postType <info@essentialhospitals.org>";
+		$headers = "From: $postType <cms@essentialhospitals.org>";
 
 		wp_mail($adArr, $subject, $message, $headers);
 		//- End Admin notification
@@ -57,9 +57,9 @@
 			$subject = "$commentAuthor commented on $postTitle";
 			$message = "Another Member Network user has just responded to a comment you posted on $postTitle<br><br>
 						$commentAuthor: $commentContent<br><br>
-						<a href='$postURL/?replytocom=$commentID#respondRevisit the discussion and post an additional response.</a><br><br>
+						<a href='$postURL/?replytocom=$commentID#respond'>Revisit the discussion and post an additional response.</a><br><br>
 						Thank you for being part of the conversation!";
-			$headers = "From: America's Essential Hospitals <info@essentialhospitals.org>";
+			$headers = "From: America's Essential Hospitals <cms@essentialhospitals.org>";
 
 			wp_mail($comParentEmail, $subject, $message, $headers);
 
@@ -79,7 +79,7 @@
 							In general, active, ongoing discussions in comment sections or the Member Network do not require input from staff. However, staff input will be valuable in certain instances, such as providing a link to pertinent resources or answering questions related to the association itself.<br><br>
 							<em>Comment Controversies</em><br><br>
 							Do not delete (or decide not to approve) comments simply because they offer an opposing or critical view. It’s better to respond to fair criticism directly. However, some comments on the website or social media channels can be malicious, offensive, or overly negative. It is an accepted risk of maintaining a transparent, open, and active online community and can be handled easily. If such a case arises, the author and communications team should collaborate to plan a course of action.";
-				$headers = "From: $postType <info@essentialhospitals.org>";
+				$headers = "From: $postType <cms@essentialhospitals.org>";
 
 				wp_mail($authorEmail, $subject, $message, $headers);
 			//- End staff author notification
@@ -90,7 +90,7 @@
 							$commentContent<br><br>
 							<a href='$postURL/?replytocom=$commentID#respond'>Respond to this comment</a><br><br>
 							You may wish to answer questions, thank commenters for their thoughts, and judiciously respond to criticism. If you’re unsure how to respond to a comment, consult the communications team at America’s Essential Hospitals at <a href='mailto:help@essentialhospitals.org'>help@essentialhospitals.org</a>.";
-				$headers = "From: $postType <info@essentialhospitals.org>";
+				$headers = "From: $postType <cms@essentialhospitals.org>";
 
 				wp_mail($authorEmail, $subject, $message, $headers);
 			//- End non-staff author notification
@@ -111,7 +111,7 @@
 				$lname = $user->last_name;
 				$names .= '<li>'.$fname." ".$lname.'</li>';
 				array_push($emailArr, $user->user_email);
-			}
+			
 
 			//Set Up email
 			$subject = "New comment(s) in your group discussion:  $postTitle";
@@ -119,9 +119,10 @@
 							$commentContent<br><br>
 							<a href='$postURL/?replytocom=$commentID#respond'>Respond to this comment</a><br><br>
 							You may wish to answer questions, thank commenters for their thoughts, and judiciously respond to criticism. If you’re unsure how to respond to a comment, consult the communications team at America’s Essential Hospitals at <a href='mailto:help@essentialhospitals.org'>help@essentialhospitals.org</a>.";
-			$headers = "From: America's Essential Hospitals <info@essentialhospitals.org>";
+			$headers = "From: America's Essential Hospitals <cms@essentialhospitals.org>";
 
-			wp_mail($emailArr, $subject, $message, $headers);
+			wp_mail($user->user_email, $subject, $message, $headers);
+			}
  
 		}
 
@@ -130,65 +131,59 @@
 
 	}
 
-//EMAIL FULL GROUP ON GROUP DICSUSSION APPROVAL 
+//EMAIL FULL GROUP ON GROUP DICSUSSION APPROVAL  -- called from content-groupdiscussion.php
 
-add_action('transition_comment_status', 'my_approve_comment_callback', 10, 3);
-function my_approve_comment_callback($new_status, $old_status, $comment_id) {
-    if($old_status != $new_status) {
-        if($new_status == 'approved') {
-    		$comment = get_comment($comment_id);
-			$commentDate = strtotime($comment->comment_date);
-			$commentDate = date("M jS", $commentDate);
-			$commentContent = $comment->comment_content;
-			$commentID = $comment->comment_ID;
-			$commentAuthor = $comment->comment_author;
-			$post = get_post($comment->comment_post_ID);
-			$post_id = $post->ID;
-			$postTitle = $post->post_title;
-			$post_type = $post->post_type;
-
-
-			if($post_type == 'discussion'){
-				//get member emails of discussion groups
-	 			$groupID = get_post_meta( $post_id, 'parentID', true);
-	 			$members = get_post_meta($groupID,'autp',true);
-	 			$emailArr = array();
-
-				foreach($members as $member){
-					$user = get_userdata($member['user_id']);
-					$fname = $user->first_name;
-					$lname = $user->last_name;
-					$names .= '<li>'.$fname." ".$lname.'</li>';
-					array_push($emailArr, $user->user_email);
-				}
-
-				//Set Up email
-				$subject = "New Discussion Post in Your Group";
-				$message = " This is a test email!";
-				$headers = "From: America's Essential Hospitals <info@essentialhospitals.org>";
-
-				wp_mail($emailArr, $subject, $message, $headers);
+//add_action( 'wp_insert_post', 'email_group', 10, 1 );	 --do this to update users on discussion created in backend to notify groups. need to add parentID 
+ 
+function email_group($post_id) { 
+	
+	$post = get_post($post_id);
+	$postTitle = $post->post_title;
+	$post_type = $post->post_type;
+	$postURL = get_permalink($post->ID);
+ 
+	if($post_type == 'discussion'){
+		$post_id = $post->ID;
+		$postDate = strtotime($post->post_date);
+		$postDate = date("M jS", $postDate);
+		$postContent = $post->post_content;
 
 
-	 			//update_post_meta($groupID, 'autptest', $groupEmailArr);
+		$postAuthor = $post->post_author;
+		//get member emails of discussion groups
+			$groupID = get_post_meta( $post_id, 'parentID', true);
 
 
-			}else{
-				break;
+			
+
+			
+			if($groupID != ''){
+ 			$members = get_post_meta($groupID,'autp',true);
+ 			$emailArr = array();
+ 			$groupTitle = get_the_title($groupID);
+
+			foreach($members as $member){
+				$user = get_userdata($member['user_id']);
+				$fname = $user->first_name;
+				$lname = $user->last_name;
+				$names .= '<li>'.$fname." ".$lname.'</li>';
+				//array_push($emailArr, $user->user_email);
+				$subject = "New Discussion in Your Group";
+				$message = "A new discussion has been posted to your group, $groupTitle: <br><br><a href='$postURL/'>$postTitle</a><br><br>Thank you for being part of the conversation!";
+				$headers = "From: America's Essential Hospitals <cms@essentialhospitals.org>";
+
+				wp_mail($user->user_email, $subject, $message, $headers);
 			}
 
-            /*
-            	check if this hook works on preapproved comments
-				get comment post id
-				check if id is a group
-					if yes > generate array of emails of group users and generate email
-				else
-					break	
-		
+			//Set Up email
+			
+		}
 
-            */
-        }
-    }
+	}else{
+		break;
+	}
+ 
+
 }
  
 
@@ -286,7 +281,7 @@ function my_approve_comment_callback($new_status, $old_status, $comment_id) {
 					Topic/Description: <em>$postDescription</em><br>
 					Requested Members: <ul>$membership</ul><br><br>
 					<a href='$adminURL'>Approve or decline this request</a>.";
-		$headers = "From: Member Network <info@essentialhospitals.org>";
+		$headers = "From: Member Network <cms@essentialhospitals.org>";
 
 		wp_mail($adArr, $subject, $message, $headers);
 	}
@@ -331,7 +326,7 @@ function my_approve_comment_callback($new_status, $old_status, $comment_id) {
 				<ul>$names</ul>
 
 				Again, thank you for engaging your fellow members, and good luck reaching your goals. As the group leader, you can guide the conversation how you choose, but we are happy to help if you have questions. When the group is no longer necessary, please contact your staff moderator or <a href='mailto:$adminEmail'>general web admin</a> to close it.";
-				$headers = "From: America's Essential Hospitals <info@essentialhospitals.org>";
+				$headers = "From: America's Essential Hospitals <cms@essentialhospitals.org>";
 
 				wp_mail($authorEmail, $subject, $message, $headers);
 			}
@@ -377,7 +372,7 @@ function my_approve_comment_callback($new_status, $old_status, $comment_id) {
 					</li>
 				</ul>
 				Contact the communications team at help@essentialhospitals.org if you have any questions about using the Member Network and community discussions.";
-				$headers = "From: Member Network <info@essentialhospitals.org>";
+				$headers = "From: Member Network <cms@essentialhospitals.org>";
 
 				wp_mail($authorEmail, $subject, $message, $headers);
 			}
@@ -412,7 +407,7 @@ function my_approve_comment_callback($new_status, $old_status, $comment_id) {
 					You might first need to sign in. Then, you will see this request (and possibly others) under \"Requests Received\" on the right hand side of your Contacts page; select each request to approve it or deny it. Note: If, after signing in, you land on your Member Network dashboard rather than your contacts page, choose \"Contacts\" from the menu bar.<br><br>
 
 					If you have questions or comments, contact the America’s Essential Hospitals communications team at <a href=\"mailto:help@essentialhospitals.org\">help@essentialhospitals.org</a>.";
-		$headers = "From: America's Essential Hospitals <info@essentialhospitals.org>";
+		$headers = "From: America's Essential Hospitals <cms@essentialhospitals.org>";
 
 		wp_mail($toEmail, $subject, $message, $headers);
 	}
@@ -434,7 +429,7 @@ function email_content_type() {
 add_filter ("wp_mail_from_name", "email_from_name");
 function email_from_name($original_email_from) {
 	if($original_email_from == 'WordPress'){
-		return "America's Essential Hospitals <info@essentialhospitals.org>";
+		return "America's Essential Hospitals <cms@essentialhospitals.org>";
 	}else{
 		return $original_email_from;
 	}

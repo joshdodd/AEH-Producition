@@ -132,7 +132,10 @@ function output_connections($output = "", $id, $pending, $limit = 8){
 		$staff     = $row['staff'];
 		$firstname = $row['first_name'];
 		$lastname  = $row['last_name'];
-		$gravurl   = get_avatar_url(get_avatar($friendID));
+		$get_avatar = get_avatar($friendID);
+		preg_match("/src='(.*?)'/i", $get_avatar, $matches);
+    	$gravurl = $matches[1];
+ 
 		$deny      = "";
 		if ($deny_button){
 			$deny  = "
@@ -159,9 +162,5 @@ function output_connections($output = "", $id, $pending, $limit = 8){
 	return $output;
 }
 
-// Wordpress get avatar returns img tag. Use this to return the URL portion only
-function get_avatar_url($get_avatar){
-    preg_match("/src='(.*?)'/i", $get_avatar, $matches);
-    return $matches[1];
-}
+ 
 ?>

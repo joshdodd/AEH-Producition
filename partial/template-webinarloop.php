@@ -85,7 +85,7 @@
 								<div class="private-webinar <?php echo $postColor; ?>"></div>
 							<?php } ?>
 		    				<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-		    				<span class="item-date"><?php echo date('M j, Y', get_field('webinar_date')); ?> at.. <?php echo date('g:i A T',get_field('webinar_date')); ?></span>
+		    				<span class="item-date"><?php echo date('M j, Y', get_field('webinar_date')); ?> | <?php echo date('g:i A T',get_field('webinar_date')); ?></span>
 		    			</div>
 
 		    			<?php

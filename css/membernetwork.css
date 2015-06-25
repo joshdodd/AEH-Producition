@@ -50,6 +50,10 @@
 	#membernetwork h1.title{margin:0 0 34px 0;color:#000;text-transform: uppercase;}
 	#membernetwork h1.title .grey{color:#565656;}
 	#memberdash h2.heading,#membernetwork h2.heading{font-size:22px;font-weight:normal;color:#e7e7e7;background:#2e2e2e;text-transform: none;padding:2px 7px;margin:0 0 16px 0;display:block;clear:both;}
+		#membernetwork h2.heading.quality{background:#28bdb3; color: #fff;}
+		#membernetwork h2.heading.education{background:#525252;color: #fff;}
+		#membernetwork h2.heading.action{background:#f05135;color: #fff;}
+		#membernetwork h2.heading.institute{background:#0397d6;color: #fff;}
 
 	nav.membernav{margin:0 0 12px 0;float:left;background:#2e2e2e;}
 		nav.membernav .gutter{padding:5px 23px;}
@@ -86,8 +90,8 @@
 		ul.group li .description{}
 
 	form#addPost{float:left;width:100%;}
-		#addPost input[type="text"]{width:98%;float:left;}
-		#addPost textarea{width:95% !important;padding:2%;float:left;font-family: 'Cabin',sans-serif;font-size:12px;}
+		#addPost input[type="text"]{width:98%;float:left; position: relative; z-index: 100000}
+		#addPost textarea{width:95% !important;padding:2%;float:left;font-family: 'Cabin',sans-serif;font-size:12px;position: relative; z-index: 10}
 		#addPost input[type="submit"]{float:right;background:#f05135;border:none;color:#fff;padding:5px 10px;text-transform: uppercase;border-radius:3px;letter-spacing:0;font-size:11px;}
 
 	a.member-icon{opacity:1;}
@@ -120,7 +124,7 @@
 		#userMeta ul.social li a{display:block;}
 		#userMeta ul.social li a:hover{display:block; opacity: 0.7}
 
-		#userMeta span.edit{float:right;text-align:right;font-size:10px}
+		#userMeta span.edit{float:right;text-align:right;font-size:10px;   margin-bottom: 10px;}
 			#userMeta span.edit a, #addNews input[type="submit"]{color:#828282;letter-spacing: -0.03em;color: #fff !important;font-weight: bold;font-size: 11px;background: #f05135;padding: 6px 10px;border-top: 1px solid #ababab;text-transform: uppercase;border-radius: 3px;}
 			#userMeta span.edit a:hover{opacity: 0.7;cursor:pointer;}
 
@@ -473,7 +477,7 @@ form#searchform {margin:0;}
 	#infinitescroll.search-func{display:none;}
 .styled-reset {position: absolute;top: 0;right: 12px;}
 	.styled-reset #reset-btn{background: #f05135;border: medium none;color: #FFFFFF;padding: 5px 10px;text-transform: uppercase;border-radius: 3px;margin: 0 auto;display: inline-block;}
-
+	#reset-btn:hover{cursor: pointer; opacity: 0.7}
 
 
 

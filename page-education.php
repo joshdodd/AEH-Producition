@@ -103,7 +103,12 @@ $speakerIMG = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); ?>
 								$user_info = get_userdata($currentUser);
 								$user_avatar = get_avatar($currentUser);
 							?>
+
+
 							<div class="panel signedin">
+
+								<?php include(locate_template('/membernetwork/module-dashProfile.php')); ?>
+								<!--
 								<div id="userProfile">
 									<div class="gutter clearfix">
 										<div id="userAvatar" class="clearfix">
@@ -136,6 +141,7 @@ $speakerIMG = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); ?>
 										</div>
 									</div>
 								</div>
+								-->
 							</div>
 							<?php } ?>
 
@@ -148,7 +154,71 @@ $speakerIMG = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); ?>
 						</div>
 						</div>
 
-						<div class="stamp ljhlkjhlkjhlkh">
+						<div class="stamp pad">
+							<!--  Upcoming Events Box -->
+							<div class="panel grey">
+								<div class="item-icon grayy">Upcoming Events
+									<img src="<?php bloginfo('template_directory'); ?>/images/icon-education.png" />
+								</div>
+								<?php
+								$today = mktime(0, 0, 0, date('n'), date('j'));
+								$args = array(
+									'post_type' => 'events',
+									'posts_per_page' => 3,
+									'order' => 'asc',
+									'post_status' => 'publish',
+									'meta_query'  => array(
+										array(
+											'key' => 'date',
+											'value' => $today,
+											'compare' => '>=' 
+										)
+									),
+									'orderby' => 'meta_value',
+									'meta_key' => 'date',
+								);
+								$query = new WP_Query($args);
+
+								if ( $query->have_posts() ) { while ( $query->have_posts() ) { 
+									$query->the_post();
+									$postType = get_field('section');
+									$date = get_post_meta( get_the_ID(), 'date', 'true');
+									//check post type and apply a color
+									if($postType =='policy'){
+										$postColor = 'redd';
+									}else if($postType =='quality'){
+										$postColor = 'greenn';
+									}else if($postType =='education'){
+										$postColor = 'grayy';
+									}else if($postType =='institute'){
+										$postColor = 'bluee';
+									}else{
+										$postColor = 'redd';
+									} ?>
+									<div class="entry webinar">
+										<div class="gutter clearfix">
+											<div class="entry-content">
+												<p>
+													<div class="title <?php echo $postColor; ?>">
+														<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+													</div> 
+													<span class="date"><?php echo date('M j, Y', $date);?>
+													</span> | 
+													<span class="excerpt"><?php $exc = get_the_excerpt(); echo substr($exc, 0, 50); ?>
+													</span>
+												</p>
+											</div>
+										</div>
+									</div>
+								<?php }
+								echo '<a class="readmore" href="'.get_post_type_archive_link('events').'/?timeFilter=future">All Upcoming Events &raquo;</a>';
+								} ?>
+							</div>
+							<!--  END Events Box -->
+	
+
+							<!--  Upcoming Webinars Box -->
+						 
 							<div class="panel grey">
 								<div class="item-icon grayy">Upcoming Webinars
 									<img src="<?php bloginfo('template_directory'); ?>/images/icon-education.png" />
@@ -163,8 +233,8 @@ $speakerIMG = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); ?>
 										'meta_query'  => array(
 											array(
 												'key' => 'webinar_date',
-												'value' => $today,
-												'compare' => '>='
+												'value' => $today, 
+												'compare' => '>=' 
 											)
 										),
 										'orderby' => 'meta_value',
@@ -210,6 +280,9 @@ $speakerIMG = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); ?>
 								echo '<a class="readmore" href="'.get_post_type_archive_link('webinar').'/?timeFilter=future">All Upcoming Webinars &raquo;</a>';
 								} ?>
 							</div>
+							<!--  END Upcoming Webinars Box -->
+							
+
 						</div>
 
 						<?php while ( have_posts() ) : the_post(); ?>
@@ -286,7 +359,7 @@ $speakerIMG = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); ?>
 						<?php
 							$args = array(
 								'post_type' => 'alert',
-								'posts_per_page'=> 3,
+								'posts_per_page'=> 6,
 								'orderby'   => 'date',
 								'order'     => 'asc',
 								'tax_query' => array(

@@ -8,7 +8,7 @@
 
 	//Determine if filter is being reset
 	if($ajaxFilter == '*'){
-		$ajaxFilter = array('policy','quality','webinar','institute');
+		$ajaxFilter = array('policy','quality','webinar','institute','post','general');
 	}
 	if($ajaxFilter == 'education'){
 		$ajaxFilter = 'webinar';
@@ -20,7 +20,7 @@
 	$today = mktime(0, 0, 0, date('n'), date('j'));
 	if($ajaxFilter != 'education'){
 		$args = array(
-			'posts_per_page' => 15,
+			'posts_per_page' => 25,
 			'post_type' => $ajaxFilter,
 			'ignore_sticky_posts' => 1,
 		);
@@ -93,8 +93,13 @@
 			}
 		}else if($postType == 'institute'){
 			$postColor = 'bluee';
+		}else if($postType == 'post'){
+			$postColor = 'blog';
+			$postType = 'blog';
+		}else if($postType == 'general'){
+			$postColor = 'redd';
 		}else{
-			$postColor = 'bluee';
+			$postColor = 'redd';
 		}
 		$terms = wp_get_post_terms(get_the_ID(), 'series');
 		if($terms){

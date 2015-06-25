@@ -34,7 +34,7 @@
 
 
 	$args = array(
-		'post_type' => array('policy','institute','post'),
+		'post_type' => array('policy','institute','quality','post'),
 		'policytopics' => $ajaxFilter,
 		'tax_query'    => array(
 			array(

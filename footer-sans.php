@@ -82,14 +82,15 @@
   if(is_user_logged_in()){ 
   		$currentUser = get_current_user_id();
   		if (isset($currentUser)) {
-		  $gacode = "ga('create', 'UA-47673413-1', { 'userId': '%s' });";
-
-		      echo "ga('set', 'dimension1','".$currentUser ."');"; 
+			$gacode = "ga('create', 'UA-47673413-1', { 'userId':'".$currentUser."'});";
+		  	echo $gacode;
+		  	echo "ga('set', '&uid', '".$currentUser."');";
+		    echo "ga('set', 'dimension1','".$currentUser ."');"; 
 
 		} 
   }
   else
-  	echo "ga('create', 'UA-47673413-1', 'essentialhospitals.org');";
+  	echo "ga('create', 'UA-47673413-1', 'auto');";
   ?>
 
   ga('send', 'pageview');

@@ -662,6 +662,7 @@ $(document).ready(function(){
 		if($('#institutePostBox').length > 0){
 			$('#institutePostBox').masonry();
 		}
+
 		$('#mobile-slide').hammer({
 			prevent_default: true,
 			drag: false,
@@ -684,16 +685,33 @@ $(document).ready(function(){
 				$(this).children('.p_hover').fadeIn(200);
 			}
 		});
+
+		
 		$('.scrollable').hammer({
-			swipe_velocity:0.3}).on('swipeleft',function(event){
+			swipe_velocity:0.3,
+			}).on('swipeleft',function(event){
 			$('#nextbtn').click();
 			resizeMasonry();
 		});
+
+ 	 
 		$('.scrollable').hammer({
-			swipe_velocity:0.3}).on('swiperight',function(event){
+			  drag: true, 
+			swipe_velocity:0.3 
+			 }).on('swiperight',function(event){
 			$('#prevbtn').click();
 			resizeMasonry();
-		});
+		}); 
+
+		/*		 
+		$('.scrollable').hammer({
+			prevent_default: false, drag: true, dragBlockVertical: true,
+			swipe_velocity:0.3 
+			 }).on('swipedown',function(event){
+			window.scrollBy(0,200);
+			//resizeMasonry();
+		}); */
+
 		$('#page-filters').hammer({
 			prevent_default: true,
 			drag: false,

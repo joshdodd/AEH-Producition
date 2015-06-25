@@ -29,7 +29,15 @@
 	<div class="post long columns <?php echo $postColor; ?>  <?php echo get_post_type( get_the_ID() ); ?> ">
 				<div class="graybarright"></div>
 	  			<div class="item-bar"></div>
-    			<div class="item-icon"><img src="<?php bloginfo('template_directory'); ?>/images/icon-<?php echo $postType; ?>.png" /></div>
+    			<div class="item-icon"><img src="<?php bloginfo('template_directory'); ?>/images/icon-<?php echo $postType; ?>.png" />
+					<?php $terms = wp_get_post_terms(get_the_ID(), 'series');
+    					if($terms){
+	    					$termLink = get_term_link($terms[0], 'series');
+		    				echo "<a href='".$termLink."'>".$terms[0]->name."</a>";
+	    				}
+    				?>
+
+    			</div>
     			<div class="item-content">
 	    			<div class="item-header">
 	    				<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>

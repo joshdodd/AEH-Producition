@@ -24,15 +24,123 @@ global $wpdb;
 				<h2 class='heading'>Diagnostic Pages</h1>
 
 <?php
+
+//ORDER FOR IMIS SYNC
+//import_imis();
+//update_wp_users();
+//find_new_wp_users();
+insert_new_wp_users();
+
+
+
+
+//$headers = "From: America's Essential Hospitals <info@essentialhospitals.org>\r\n";
+//mail('joshdodd@meshfresh.com', 'Email Test', 'Testing the email', $headers);
+
+
+		/*
+		$comment = get_comment($ci);
+		$commentDate = strtotime($comment->comment_date);
+		$commentDate = date("M jS", $commentDate);
+		$commentContent = $comment->comment_content;
+		$commentID = $comment->comment_ID;
+		$commentAuthor = $comment->comment_author;
+		$commentContent = apply_filters('the_content', $comment->comment_content); 
+		echo $commentContent;
  
+
+		$subject = "TEST EMAIL";
+		$headers = "From: AEH <info@essentialhospitals.org>";
+		$message = "A user has commented on the post TITLE published TODAY<br><br>
+					$commentContent<br><br>
+					<a href='/comment.php?action=editcomment&c=$commentID'>Approve or delete this comment</a>
+					<br><br>
+					<a href='/edit-comments.php'>View all recent comments</a>
+					<br><br>
+					The above comment may be hidden until you or another web admin approves it. If this user previously posted comments that were approved, this comment will have been automatically approved and is already visible. Review this comment regardless, as action may be necessary. ";
+*/
+
+		//wp_mail('joshdodd@meshfresh.com', $subject, $message, $headers);
+
+		//set the coauthors of ALL child pages
+		//$post_id =5055;	
+		// $args = array(
+			 
+		//	'child_of' => 5055,
+		//	'post_type' => 'group'
+ 
+		//); 			
+		//$pages = get_pages($args);
+		//foreach($pages as $child) {
+		//		echo $child->ID;
+		//		echo "<br>";
+			//$coauthors_plus->add_coauthors($child->ID,$userArray);
+			//add_post_meta($child->ID,'authout',$authout,true) || update_post_meta($child->ID,'authout',$authout);
+		//}
+
+
+/*
+$f = fsockopen('smtp.essentialhospitals.org', 25) ;
+if ($f !== false) {
+    $res = fread($f, 1024) ;
+    if (strlen($res) > 0 && strpos($res, '220') === 0) {
+        echo "Success" ;
+        var_dump($f);
+    }
+    else {
+        echo "Error: " . $res ;
+    }
+}
+fclose($f) ; */
  
 	// Send a POST request to ibridge
 	//$result = post_request('http://isgweb.naph.org/ibridge/DataAccess.asmx/ExecuteDatasetStoredProcedure', $params);
 	//$result_stat = $result['status'];
+	
+
+	/*------------USERS TO OPEN REAL MODULE----------------//
+	$results = $wpdb->get_col("SELECT user_id FROM `wp_usermeta` where meta_key = 'REAL-Track-Start' ORDER BY `wp_usermeta`.`user_id` ASC");
+	 
+	echo "<table>"; 
+	foreach($results as $id) 
+	{
+		echo "</tr>"; 
+		$user_info = get_userdata($id);
+     	$email = $user_info->user_email;
+      	$first_name = $user_info->first_name;
+      	$last_name = $user_info->last_name;
+		echo "<td>".$id ."</td><td>". $email."</td><td>".$first_name." ".$last_name."</td>";
+		echo "</tr>"; 
+	}
+	echo "</table>"; */
+
+
+	/*------------LOGGED IN USERS TO ACCESS  REAL MODULE LANDING----------------
+	$results = $wpdb->get_col("SELECT user_id FROM `wp_usermeta` where meta_key = 'REAL' ORDER BY `wp_usermeta`.`user_id` ASC");
+	 
+	echo "<table>"; 
+	foreach($results as $id) 
+	{
+		echo "</tr>"; 
+		$user_info = get_userdata($id);
+     	$email = $user_info->user_email;
+      	$first_name = $user_info->first_name;
+      	$last_name = $user_info->last_name;
+		echo "<td>".$id ."</td><td>". $email."</td><td>".$first_name." ".$last_name."</td>";
+		echo "</tr>"; 
+	}
+	echo "</table>"; 
+
+
+	get_imis_tables(); */
+
+
+
+	
 
  
  
-
+	/*
 	$results = $wpdb->get_col("SELECT `ID` FROM `wp_aeh_import_full`");
 	$current_ids = $wpdb->get_col("SELECT `meta_value` FROM `wp_usermeta` WHERE `meta_key`='aeh_imis_id' ");
 

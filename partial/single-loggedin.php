@@ -99,9 +99,12 @@
 
 
 				</div>
-				<div id="printbtn"><a href="javascript:print();"><em>Print</em></a></div>
+				<div id="printbtn"><a href="javascript:print();"><em>Print.</em></a></div>
+
+				<div class="comments-wrapper"><?php comments_template('comments-article.php'); ?></div>
 
 				<?php
+				/*
 					$args = array(
 					  'id_form'           => 'commentform',
 					  'id_submit'         => 'submit',
@@ -162,7 +165,7 @@
 					  ),
 					);
 					comment_form($args);
-				?>
+				*/?>
 
 
 			</div>

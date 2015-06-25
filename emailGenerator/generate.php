@@ -158,7 +158,7 @@
 			$postType = 'education';
 			$postColor = '#565656';
 			$postTime = date('M j, Y', get_field('webinar_date'));
-			$postAuthor = '<a href="'.get_field('registration_link').'">Register Now</a>';
+			$postAuthor = '<a href="https://isgweb.essentialhospitals.org/ISGWeb/LogIn/login.aspx?ReturnUrl='.get_field('registration_link').'">Register Now</a>';
 		}else if($postType == 'institute'){
 			$postColor = '#00AEEF';
 			$lock = 'institute';
@@ -195,15 +195,12 @@
 			<td style='padding-top: 3px; padding-right: 25px; padding-bottom: 7px; padding-left: 25px; text-align: left;' valign='top'>
 			<div style='font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 10pt; line-height: 150%; padding-bottom: 5px; text-align: left;'>
 			<span class='title-edit'>
-				<a style='color: $postColor; text-decoration: none;' href='$postLink' target='_blank'>
-
-					<b>$postTitle</b>
-				</a>
+				<a style='color: $postColor; text-decoration: none;' href='$postLink' target='_blank'><b>$postTitle</b></a>
 			</span>
 			</div>
 			<div style='color: #5a5a5a; font-family: Arial, Helvetica, sans-serif; font-size: 10pt; padding-bottom: 5px; text-align: left;'>$postTime || <em>$postAuthor</em></div>
 			<div style='color: #5a5a5a; font-family: Arial, Helvetica, sans-serif; font-size: 10pt; text-align: left;'>
-			<span class='excerpt-edit' style='color: #5a5a5a; font-family: Arial, Helvetica, sans-serif; font-size: 10pt; line-height: 150%;'>$postExcerpt&nbsp;&nbsp;</span><span style='color: $postColor; font-style: italic; font-family: Georgia, Times, serif; font-size: 8pt;'><em><a style='color: $postColor; text-decoration: none;' href='$postLink' target='_blank'>view more»</a></em></span>
+			<span class='excerpt-edit' style='color: #5a5a5a; font-family: Arial, Helvetica, sans-serif; font-size: 10pt; line-height: 150%;'>$postExcerpt&nbsp;&nbsp;</span><span style='color: $postColor; font-style: italic; font-family: Georgia, Times, serif; font-size: 8pt;'><em><a style='color: $postColor; text-decoration: none;' href='$postLink' target='_blank'>view more&raquo;</a></em></span>
 			</div>
 			</td>
 			</tr>
@@ -284,7 +281,7 @@
 			$postType = 'education';
 			$postColor = '#565656';
 			$postTime = date('M j, Y', get_field('webinar_date'));
-			$postAuthor = '<a href="'.get_field('registration_link').'">Register Now</a>';
+			$postAuthor = '<a href="https://isgweb.essentialhospitals.org/ISGWeb/LogIn/login.aspx?ReturnUrl='.get_field('registration_link').'">Register Now</a>';
 		}else if($postType == 'institute'){
 			$postColor = '#00AEEF';
 			$lock = 'institute';
@@ -321,7 +318,7 @@
 			<td style='padding-top: 3px; padding-right: 25px; padding-bottom: 7px; padding-left: 25px; text-align: left;' valign='top'>
 			<div style='font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 10pt; line-height: 150%; padding-bottom: 5px; text-align: left;'><span class='title-edit'><a style='color: $postColor; text-decoration: none;' href='$postLink' target='_blank'><b>$postTitle</b></a></span></div>
 			<div style='color: #5a5a5a; font-family: Arial, Helvetica, sans-serif; font-size: 10pt; padding-bottom: 5px; text-align: left;'>$postTime || <em>$postAuthor</em></div>
-			<div style='color: #5a5a5a; font-family: Arial, Helvetica, sans-serif; font-size: 10pt; text-align: left;'><span class='excerpt-edit' style='color: #5a5a5a; font-family: Arial, Helvetica, sans-serif; margin-bottom: 5px; font-size: 10pt; line-height: 150%;'>$postExcerpt&nbsp;&nbsp;</span><span style='font-style: italic; font-family: Georgia, Times, serif; font-size: 8pt;'><em><a style='color: $postColor; text-decoration: none;' href='$postLink' target='_blank'>view more»</a></em></span></div>
+			<div style='color: #5a5a5a; font-family: Arial, Helvetica, sans-serif; font-size: 10pt; text-align: left;'><span class='excerpt-edit' style='color: #5a5a5a; font-family: Arial, Helvetica, sans-serif; margin-bottom: 5px; font-size: 10pt; line-height: 150%;'>$postExcerpt&nbsp;&nbsp;</span><span style='font-style: italic; font-family: Georgia, Times, serif; font-size: 8pt;'><em><a style='color: $postColor; text-decoration: none;' href='$postLink' target='_blank'>view more&raquo;</a></em></span></div>
 			</td>
 			</tr>
 			</tbody>

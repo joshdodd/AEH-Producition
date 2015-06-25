@@ -93,11 +93,9 @@
 	//Query users
 	if($sort == 'search'){
 		$users = $wpdb->get_results("SELECT DISTINCT users.ID
-									 FROM wp_users users, wp_usermeta search, wp_usermeta hospmem
-									 WHERE users.ID = search.user_id
-									 AND search.meta_key = 'job_title'
-									 AND users.ID != $curID
-									 AND (users.display_name LIKE '%$search%' OR search.meta_value LIKE '%$search%')
+									 FROM wp_users users, wp_usermeta hospmem
+									 WHERE users.ID != $curID
+									 AND (users.display_name LIKE '%$search%')
 									 AND (hospmem.meta_key = 'aeh_member_type' AND hospmem.meta_value = 'hospital')
 									 ORDER BY ID ASC");
 	}elseif($sort == 'job-function'){

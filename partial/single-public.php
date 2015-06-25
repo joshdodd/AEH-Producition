@@ -100,8 +100,16 @@
 
 				</div>
 				<div id="printbtn"><a href="javascript:print();"><em>Print</em></a></div>
+				 
+				 <div id="disc-comments">
+				 	
 
+				 
+				<h2>Discussion:</h2> 
+				 <?php  comments_template('/comments-article.php'); ?> 
+				</div>
 				<?php
+				 
 					$args = array(
 					  'id_form'           => 'commentform',
 					  'id_submit'         => 'submit',
@@ -162,6 +170,7 @@
 					  ),
 					);
 					comment_form($args);
+				 
 				?>
 
 

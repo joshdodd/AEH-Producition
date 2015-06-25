@@ -285,7 +285,7 @@ table {  max-width: 100%;  background-color: transparent;}
 				.post .item-bar{height:8px;width:100%;}
 				.post .item-icon, .item-icon{height: 20px;padding: 3px 2px 0 0;width: 99%;text-align: right;float: right;font-size: 10px;line-height: 16px;text-transform: uppercase;font-weight: bold;}
 					.post .item-icon img, .item-icon img{float:right;padding:0 0 0 4px;}
-				.post .item-content{color:#5a5a5a;}
+				.post .item-content{color:#5a5a5a; line-height: 15px;}
 					.post .item-content p{font-size: 13px;line-height: 18px;margin: 0;letter-spacing: 0.006em;word-spacing: 1px; padding-right: 15px;}
 					.post.long .item-content{height:auto;padding:10px 15px 10px 20px;}
 				.post .item-header{width:100%;}
@@ -295,6 +295,8 @@ table {  max-width: 100%;  background-color: transparent;}
 						.post .item-header span.item-author{font-style:italic;}
 				.post .item-tags{color:#a2a2a2;font-size:11px;padding:0;text-align:right;position:absolute;bottom:20px;right:4px;}
 					.post .item-tags span{display:inline;text-transform: uppercase;}
+				.short .item-tags{display: none;}	
+				.short .item-content p{display: none;}	
 
 	#prev, #next {background:#FFFFFF;display: none;height: 700px;position: absolute;top: 0;width: 50%;z-index: 1000;}
 	#prevbtn, #nextbtn {display: block;height: 125px;position: absolute;top: 400px;width: 64px;z-index: 1001;background: url("http://essentialhospitals.org/wp-content/themes/EssentialHospitals/images/slider_btn.png") no-repeat;}
@@ -446,6 +448,9 @@ table {  max-width: 100%;  background-color: transparent;}
 	.single .policy a,.policy.single #contentPrimary h1,.policy.single #contentPrimary h2,.policy.single #contentPrimary a,.post.policy a, a.policy{color:#f05133;}
 		#contentSecondary a.policy{color:#f05133 !important;}
 
+	.single .general a,.general.single #contentPrimary h1,.general.single #contentPrimary h2,.general.single #contentPrimary a,.post.general a, a.general{color:#f05133;}
+		#contentSecondary a.general{color:#f05133 !important;}	
+
 	.single .quality a,.quality.single #contentPrimary h1,.quality.single #contentPrimary h2,.quality.single #contentPrimary a,.post.quality a, a.quality{color:#28bdb3;}
 		#contentSecondary a.quality{color:#28bdb3 !important;}
 
@@ -527,7 +532,7 @@ table {  max-width: 100%;  background-color: transparent;}
 	#featured-img.archive.quality{border-top:7px solid #28bdb3;}
 	#featured-img.archive.institute{border-top:7px solid #0397d6;}
 	#featured-img.archive.education{border-top:7px solid #565656;}
-	#featured-img.archive.tag{}
+	#featured-img.archive.tag{text-transform: capitalize}
 	#featured-img.archive h3{}
 
 	.tag #contentWrap #contentPrimary{float:left;width:100%;}
@@ -619,7 +624,7 @@ table {  max-width: 100%;  background-color: transparent;}
 	#institutePostBox .post.tall{width:272px !important;height: 452px !important;}
 	#institutePostBox .post.short{width:272px !important;height:226px !important;}
 
-	#institutePostBox.infinite .post.wide.fluid{width:552px !important;height:auto !important;margin:0 0 15px 0 !important;}
+	#institutePostBox.infinite .post.wide.fluid{width:545px !important;height:auto !important;margin:0 0 15px 0 !important;}
 	#institutePostBox.infinite .post.tall.fluid{width:272px !important;height:auto !important;}
 	#institutePostBox.infinite .post.short.fluid{width:272px !important;height:auto !important;}
 		.post.fluid .item-tags{position:relative;bottom:auto;right:auto;margin:10px 0 20px 0;}
@@ -770,6 +775,10 @@ table {  max-width: 100%;  background-color: transparent;}
 	.webinar #contentPrimary ul#pagefilter{background:#525252;}
 		.webinar #contentPrimary ul#pagefilter a:hover,.webinar #contentPrimary ul#pagefilter li.active a{background:#e7e7e7;color:#525252;}
 	.webinar .post{background:#f0f0f0;}
+		.webinar .mini-greenn{background: #eaf8f7; }
+		.webinar .mini-redd{background: #fdedea;}
+		.webinar .mini-bluee{background:#e5f7fd; }
+		.webinar .mini-grayy{background: #f1f0f1; }
 	#contentWrap.webinar #contentSecondary #fader div.item .post.long{height:282px !important;width:270px !important;margin:0 0 6px 0;}
 
 	.webinar .post.long .item-content {height: auto;padding: 35px 20px 10px 20px;}
@@ -943,7 +952,7 @@ body.blog{}
 
 #blog-comments{background:#fff;border-top:6px solid #b9b9b9;}
 	#blog-comments .gutter{padding:63px 20px 40px !important;}
-	#blog-comments h3#comments{font-family: 'Georgia',serif;font-weight: normal;font-size: 22px;margin:0 0 7px;color:#000 !important;}
+	#blog-comments h3#comments{font-family: 'Georgia',serif;font-weight: normal;font-size: 22px;margin:0 0 7px;color:#000 !important; display: block}
 	#blog-comments ol{margin:0;list-style:none;}
 
 	#blog-comments{padding:10px 0 20px 0;}
@@ -965,7 +974,7 @@ body.blog{}
 					#blog-comments p.logged-in-as{display:none;}
 					#blog-comments p{padding:10px 0 0 10px;display:table-cell;}
 					#blog-comments .reply{position: absolute;top: 0;right:0;font-style: italic;}
-					#blog-comments .comment-meta{font-style: italic;color:#BCBCBC;}
+					#blog-comments .comment-meta{font-style: italic;color:#BCBCBC; width: 60%; float: left;}
 						#blog-comments .comment-meta a{color:#bcbcbc;}
 				#respond.comment-respond {float: left;width: 100%;}
 					#respond.comment-respond p.form-allowed-tags{display:none;}
@@ -974,6 +983,16 @@ body.blog{}
 						#commentform p.form-submit{float:right;margin:0;padding:0;position:relative;}
 						#commentform input[type="submit"]{border: none;background:#f05135;color: #fff;position: relative;top: -16px;right: 3px;text-transform: uppercase;padding: 5px 15px;font-size: 12px;letter-spacing: -0.015em;word-spacing: 0.2em;border-radius:3px;behavior: url(http://essentialhospitals.org/wp-content/themes/EssentialHospitals/css/PIE.htc);}
 							#commentform input[type="submit"]:hover{cursor:pointer;}
+				#blog-comments .comment-contentbox{  display: block;  padding: 0 0 0 0px;  float: left;  width: 80%;}
+				#blog-comments li.pingback{background-color: #efefef;}	
+				#blog-comments li.pingback .reply{display: none;}
+				#blog-comments ol li{float:left;display:block;width:100%;}
+					#blog-comments ol li.pingback  .comment-author{position:relative;float:left;  width:18%; padding: 1%;}
+					#blog-comments ol li.pingback  .comment-author cite{bottom: 5px;color: #d3d3d3;  font-size: 11px; line-height: 13px;left: 5px; position: relative; width:18%;text-shadow: none;z-index: 2; ;}
+					#blog-comments ol li.pingback  .comment-author cite a{color: #5a5a5a !important;}
+ 
+					#blog-comments ol li.pingback  .comment-author span{display:none;}
+
 
 #blog-pagination {background: #fff;padding: 10px 20px;text-align:center;}
 	#blog-pagination .prev, #blog-pagination .next{}
@@ -1634,7 +1653,7 @@ a:hover * {opacity: 0.7;}
 
 
 /* Rss Icons */
-#rssFeedIcon{float: right;height: auto;width: 60px;background: url(http://essentialhospitals.org/wp-content/themes/EssentialHospitals/images/rss-icon.png) right 0 no-repeat;padding: 5px 15px 3px 0px;vertical-align: middle;}
+#rssFeedIcon{float: right;height: auto;width: 60px;background: url(http://essentialhospitals.org/wp-content/themes/EssentialHospitals/images/rss-icon.png) right 0 no-repeat;padding: 2px 15px 3px 0px;vertical-align: middle;}
 	#rssFeedIcon.utility, #rssFeedIcon.action, #rssFeedIcon.policy, #rssFeedIcon.default{background-position:right 2px;color:#F05135;}
 	#rssFeedIcon.quality{background-position:right -16px;color:#28BDB3;}
 	#rssFeedIcon.education{color:#565656;background-position:right -35px;}
@@ -1651,7 +1670,7 @@ li.blogger-only{display:none;}
 
 .super-special-page #institutePostBox .post{height:auto !important;padding:0 0 30px !important;}
 .super-special-page #institutePostBox .post.fluid{padding:0 !important;}
-.super-special-page #institutePostBox .stamp{width:276px !important;margin:0 !important;}
+.super-special-page #institutePostBox .stamp{width:276px !important; margin: 0 0 0 4px; }
 	.super-special-page #institutePostBox .stamp.ljhlkjhlkjhlkh{padding:0 8px 0 0 !important;}
 .super-special-page #institutePostBox .post.wide.stamp{width:549px !important;}
 
@@ -1726,3 +1745,7 @@ body.single-post .post-content a{color:#f05135;}
 .real span.reserve{float: left;}
 
 input#real-btn{background-color: #F05135; border:1px solid #F05135; padding: 6px 10px; text-transform: uppercase; border-radius: 5px; color: #fff;}
+
+div.mce-edit-area{border: 1px solid #d3d3d3 !important;}
+.mce-i-fullscreen{display: none;}
+#mceu_14{display: none !important}

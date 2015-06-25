@@ -69,19 +69,18 @@
 			$sticky = get_option('sticky_posts');
 			query_posts( array(
 				'posts_per_page' => 25,
-				'ignore_sticky_posts' => 1,
-				'post_type' => array('policy','quality','education','institute','post'),
-				'meta_key' => 'sticky_topic',
-				'meta_value' => 'home',
-				'meta_compare' => '!='
+				'post_type' => array('policy','quality','education','institute','post','general'),
 
+						'meta_key' => 'sticky_topic',
+						'meta_value' => 'home',
+						'meta_compare' => '!='
 
 			) );
 			if ( have_posts() ) while ( have_posts() ) : the_post();
 				$postType = get_post_type( get_the_ID() );
 
 				//check post type and apply a color
-				if($postType == 'policy'){
+				if($postType == 'policy' || $postType == 'general'){
 					$postColor = 'redd';
 				}else if($postType == 'quality'){
 					$postColor = 'greenn';

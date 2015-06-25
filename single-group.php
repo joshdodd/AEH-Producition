@@ -181,6 +181,28 @@
 					</div>
 					<?php } ?>
 
+					<?php 
+
+					//$meta = get_post_meta( get_the_ID() );
+					//$eventids = $meta['related_events'][0];
+					$eventids  = get_field('related_events');
+					//******************NEED TO EDIT THIS HERE TO GET ID FROM EVENT LOOP*************//
+					if($eventids){ ?>
+					<div class="panel colrepeat">
+						<h2 class="heading">Related Events</h2>
+						<div class="gutter">
+							<?php foreach($eventids as $post){
+								global $post;
+								setup_postdata($post);
+								echo '<a href="'.get_permalink().'">'.get_the_title().'</a><br>';
+								wp_reset_postdata();
+							} ?>
+						</div>
+					</div>
+				<?php } ?>
+
+					
+
 					<?php if(get_field('middle_column')){ while(has_sub_field('middle_column')){ ?>
 						<div class="panel colrepeat">
 							<h2 class="heading"><?php the_sub_field('title'); ?></h2>

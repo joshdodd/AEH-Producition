@@ -1,5 +1,18 @@
 <?php
+ 
+//include('includes/imis.php');
+//include('functions/cpt.php');
+//include('functions/custom-taxonomies.php');
 
+ 
+
+//Roles and Workflow
+include('includes/roles.php');
+include('includes/workflow.php');
+include('includes/email.php');
+include('includes/twitter.php');
+
+ 
 /********************************************* SWITCHES/VARIABLE SETUP ***********************************************/
 
 $test = false;														// true = TEST DATABASE, false = PRODUCTION DATABASE
@@ -72,11 +85,7 @@ function print_constants(){
 }
 
 
-//Roles and Workflow
-include('includes/roles.php');
-include('includes/workflow.php');
-include('includes/email.php');
-include('includes/twitter.php');
+
 
 //Extra User Fields when creating through the dashboard
 function extraUserFields() {
@@ -337,8 +346,8 @@ function private_lock($title){
 		);
 		// What to replace it with
 		$replacewith = array(
-			'<span style="vertical-align:middle;border:none;" class="lock-icon"><img src="http://essentialhospitals.org/wp-content/themes/EssentialHospitals/images/lock'.$pT.'.png"></span>', // What to replace protected with
-			'<span style="vertical-align:middle;border:none;" class="lock-icon"><img src="http://essentialhospitals.org/wp-content/themes/EssentialHospitals/images/lock'.$pT.'.png"></span>' // What to replace private with
+			'<span style="border:none;" class="lock-icon"><img src="http://essentialhospitals.org/wp-content/themes/EssentialHospitals/images/lock'.$pT.'.png"></span>', // What to replace protected with
+			'<span style="border:none;" class="lock-icon"><img src="http://essentialhospitals.org/wp-content/themes/EssentialHospitals/images/lock'.$pT.'.png"></span>' // What to replace private with
 		);
 		// Items replace by array key
 		$title = preg_replace($findthese, $replacewith, $title);
@@ -825,7 +834,7 @@ function add_google_analytics()
 function remove_dashboard_widgets(){
 
   //remove_meta_box('dashboard_right_now','dashboard','core'); // right now overview box
-  remove_meta_box('dashboard_incoming_links','dashboard','core'); // incoming links box
+  //remove_meta_box('dashboard_incoming_links','dashboard','core'); // incoming links box
   remove_meta_box('dashboard_quick_press','dashboard','core'); // quick press box
   remove_meta_box('dashboard_plugins','dashboard','core'); // new plugins box
   remove_meta_box('dashboard_recent_drafts','dashboard','core'); // recent drafts box
@@ -845,7 +854,7 @@ feel free to comment / uncomment  */
 function customize_meta_boxes() {
   /* Removes meta boxes from pages */
   remove_meta_box('postcustom','page','normal'); // custom fields metabox
-  remove_meta_box('trackbacksdiv','page','normal'); // trackbacks metabox
+  //remove_meta_box('trackbacksdiv','page','normal'); // trackbacks metabox
 }
 
 /** removing parts from column ------------------------------------------*/
@@ -1361,6 +1370,8 @@ $themeDIR = get_bloginfo('template_directory');
 	        'edit.php?post_type=quality', 			// Quality
 	        'edit.php?post_type=institute',			// Insitute
 	        'edit.php?post_type=webinar',			// Webinars
+	        'edit.php?post_type=events',			// Events
+			'edit.php?post_type=presentation',		// Presentaitons
 	        'edit.php', 							// Posts
 	        'edit.php?post_type=page', 				// Pages
 	        'separator1', 							// First separator
@@ -1974,6 +1985,10 @@ function my_login_redirect(){
 	if($location == 'http://essentialhospitals.org/membernetwork/registration/'){
 		$location = 'http://essentialhospitals.org/membernetwork/dashboard/';
 	}
+	print_r($location);
+	if(strpos($location,'http://essentialhospitals.org/membernetwork/member-activation/') !== false) {
+		$location = 'http://essentialhospitals.org/membernetwork/dashboard/';
+	}
     wp_safe_redirect($location);
     exit();
 }
@@ -2043,7 +2058,10 @@ function commentWalker($comment, $args, $depth) {
 				<div id="div-comment-<?php comment_ID() ?>" class="comment-body">
 			<?php endif; ?>
 			<div class="comment-author vcard">
-				<?php if ($args['avatar_size'] != 0) echo '<a href="'.get_permalink(276).'?member='.$comment->user_id.'">'.get_avatar( $comment, $args['avatar_size'] ).'</a>'; ?>
+				<?php if ($args['avatar_size'] != 0) echo '<a href="'.get_permalink(276).'?member='.$comment->user_id.'">'.get_avatar( $comment, $args['avatar_size'] ).'</a>'; 
+						else echo '<img src="http://essentialhospitals.org/wp-content/uploads/2015/04/ad516503a11cd5ca435acc9bb6523536.png" class="avatar avatar-96 photo" height="96" width="96">';
+				?>
+
 				<?php  echo '<cite class="fn"><a href="'.get_permalink(276).'?member='.$comment->user_id.'">' .get_comment_author() .'</a></cite> '; ?>
 			</div>
 
@@ -2192,6 +2210,7 @@ function update_imis_from_wp($imis_id, $userdata, $user){
 
 		global $wpdb;
 		$check = time(); //used for test purposes
+		$chgtime = date('Y-m-d H:i:s',$check);
 
 
 		$mem_type    = $userdata->aeh_staff; if ($mem_type=='Y' OR $mem_type=='y'){$mem_type= "STAFF";}else{$mem_type= "MIND";}
@@ -2263,11 +2282,12 @@ function update_imis_from_wp($imis_id, $userdata, $user){
 		$response   = $client->Update($params);
 		$result     = $response->UpdateResult;
 		$z = serialize($result);
+		$result = addslashes($result);
 		$wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('profile_update_response: $check', '$result : $email')");
 
 
 
-	if (1){
+ 
 		$params = array(
 			'securityPassword'=> SOAP_ACCOUNT_PWD,
 			'id'              => (string)$imis_id,
@@ -2278,6 +2298,7 @@ function update_imis_from_wp($imis_id, $userdata, $user){
 		$demographic = new SoapClient(SOAP_DEMOG_UPDATE_URL);
 		$response    = $demographic->Update($params);
 		$result      = $response->UpdateResult;
+		$result = addslashes($result);
     	$wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('Demographic1 response: $check', '$result')");
 
 		unset ($demographic);
@@ -2291,6 +2312,7 @@ function update_imis_from_wp($imis_id, $userdata, $user){
 		$demographic = new SoapClient(SOAP_DEMOG_UPDATE_URL);
 		$response    = $demographic->Update($params);
 		$result      = $response->UpdateResult;
+		$result = addslashes($result);
     	$wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('Demographic2 response: $check', '$result')");
 
 		unset ($demographic);
@@ -2304,6 +2326,7 @@ function update_imis_from_wp($imis_id, $userdata, $user){
 		$demographic = new SoapClient(SOAP_DEMOG_UPDATE_URL);
 		$response    = $demographic->Update($params);
 		$result      = $response->UpdateResult;
+		$result = addslashes($result);
    		$wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('Demographic3 response: $check', '$result')");
 
 		unset ($demographic);
@@ -2317,8 +2340,24 @@ function update_imis_from_wp($imis_id, $userdata, $user){
 		$demographic = new SoapClient(SOAP_DEMOG_UPDATE_URL);
 		$response    = $demographic->Update($params);
 		$result      = $response->UpdateResult;
+		$result = addslashes($result);
     	$wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('Demographic4 response: $check', '$result')");
-	}
+    	unset ($demographic);
+
+    	$params = array(
+			'securityPassword'=> SOAP_ACCOUNT_PWD,
+			'id'              => (string)$imis_id,
+			'windowName'      => 'Name-Membership',
+			'fieldName'       => 'WEB_CHG',
+			'fieldValue'      => (string)$chgtime
+		);
+		$demographic = new SoapClient(SOAP_DEMOG_UPDATE_URL);
+		$response    = $demographic->Update($params);
+		$result      = $response->UpdateResult;
+		$result = addslashes($result);
+    	$wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('WEB_CHG response: $check', '$result')");
+    	unset ($demographic);
+ 
 		$params = array(
 			'securityPassword' => SOAP_ACCOUNT_PWD,
 			'address' => array(
@@ -2334,6 +2373,7 @@ function update_imis_from_wp($imis_id, $userdata, $user){
 		$addrclient = new SoapClient(IMIS_SOAP_URL);
 		$response   = $addrclient->UpdateAddress($params);
 		$result     = $response->UpdateAddressResult;
+		$result = addslashes($result);
          $wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('Address response: $check', '$result')");
  
 		if ($result == $imis_id){
@@ -2354,6 +2394,7 @@ function update_create_imis_from_wp($imis_id, $userdata, $user){
 
 		global $wpdb;
 		$check = time(); //used for test purposes
+		$chgtime = date('Y-m-d H:i:s',$check);
 
 
 		$mem_type    = $userdata->aeh_staff; if ($mem_type=='Y' OR $mem_type=='y'){$mem_type= "STAFF";}else{$mem_type= "MIND";}
@@ -2423,11 +2464,12 @@ function update_create_imis_from_wp($imis_id, $userdata, $user){
 		$response   = $client->Update($params);
 		$result     = $response->UpdateResult;
 		$z = serialize($result);
+		$result = addslashes($result);
 		$wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('update_on_create_response: $check', '$result')");
 
 
 
-	if (1){
+ 
 		$params = array(
 			'securityPassword'=> SOAP_ACCOUNT_PWD,
 			'id'              => (string)$imis_id,
@@ -2438,6 +2480,7 @@ function update_create_imis_from_wp($imis_id, $userdata, $user){
 		$demographic = new SoapClient(SOAP_DEMOG_UPDATE_URL);
 		$response    = $demographic->Update($params);
 		$result      = $response->UpdateResult;
+		$result = addslashes($result);
     $wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('Demographic1 response: $check', '$result')");
 
 		unset ($demographic);
@@ -2451,6 +2494,7 @@ function update_create_imis_from_wp($imis_id, $userdata, $user){
 		$demographic = new SoapClient(SOAP_DEMOG_UPDATE_URL);
 		$response    = $demographic->Update($params);
 		$result      = $response->UpdateResult;
+		$result = addslashes($result);
     $wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('Demographic2 response: $check', '$result')");
 		unset ($demographic);
 		$params = array(
@@ -2463,6 +2507,7 @@ function update_create_imis_from_wp($imis_id, $userdata, $user){
 		$demographic = new SoapClient(SOAP_DEMOG_UPDATE_URL);
 		$response    = $demographic->Update($params);
 		$result      = $response->UpdateResult;
+		$result = addslashes($result);
     $wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('Demographic3 response: $check', '$result')");
 		unset ($demographic);
 		$params = array(
@@ -2475,8 +2520,24 @@ function update_create_imis_from_wp($imis_id, $userdata, $user){
 		$demographic = new SoapClient(SOAP_DEMOG_UPDATE_URL);
 		$response    = $demographic->Update($params);
 		$result      = $response->UpdateResult;
-    $wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('Demographic4 response: $check', '$result')");
-}
+		$result = addslashes($result);
+   	$wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('Demographic4 response: $check', '$result')");
+   		unset ($demographic);
+
+   		$params = array(
+			'securityPassword'=> SOAP_ACCOUNT_PWD,
+			'id'              => (string)$imis_id,
+			'windowName'      => 'Name-Membership',
+			'fieldName'       => 'WEB_CHG',
+			'fieldValue'      => (string)$chgtime
+		);
+		$demographic = new SoapClient(SOAP_DEMOG_UPDATE_URL);
+		$response    = $demographic->Update($params);
+		$result      = $response->UpdateResult;
+		$result = addslashes($result);
+    	$wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('WEB_CHG response: $check', '$result')");
+    	unset ($demographic);
+ 
 		$params = array(
 			'securityPassword' => SOAP_ACCOUNT_PWD,
 			'address' => array(
@@ -2492,6 +2553,7 @@ function update_create_imis_from_wp($imis_id, $userdata, $user){
 		$addrclient = new SoapClient(IMIS_SOAP_URL);
 		$response   = $addrclient->UpdateAddress($params);
 		$result     = $response->UpdateAddressResult;
+		$result = addslashes($result);
          $wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('Address response: $check', '$result')");
 		//$z = serialize($params);
 		//$wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('Address $check', '$result, $z')");
@@ -2512,7 +2574,7 @@ function new_imis($first,$last,$email,$password){
 	$expiration = date("Y") + 30; 					//add 30 years to the present year
 	$check_email = check_aeh_email($email); 		//test the email address to see what to set other values to
 	if ($check_email[0] == "public")return false; 	//no public users get added to the iMIS DB!
-	if ($check_email[2] == 'Y'){$staff = 'Y'; $memtype = "STAFF";}else{$staff = 'N'; $memtype = "MIND";}
+	if ($check_email[2] == 'Y'){$staff = 'Y'; $memtype = "STAFF";}else{$staff = 'N'; $memtype = "PEND";}
 	$params = array(
 		'securityPassword' => SOAP_ACCOUNT_PWD,
 		'account' => array(
@@ -2533,6 +2595,7 @@ function new_imis($first,$last,$email,$password){
 	$client     = new SoapClient(IMIS_SOAP_URL);
 	$response   = $client->Create($params);
 	$result     = $response->CreateResult;
+	$result = addslashes($result);
 	$wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('New User Time: $check', '$result')");
 
 	if (is_numeric($result + 0))return $result; // add 0 to result. If it was a number in the first place it'll still be a number (will be numeric).
@@ -2570,7 +2633,12 @@ function check_aeh_email($email){ // this is the email address to check and retu
 
 add_action('aeh_import_imis', 'import_imis');
 
-function import_imis() { 	 // fill up the wp_aeh_import & wp_aeh_import_full tables from iMIS
+function import_imis() { 	 
+
+// fill up the wp_aeh_import & wp_aeh_import_full tables from iMIS
+	//Each run pulls 1000 users from iMIS into wp_aeh_import table.
+
+	//Fails when iMIS user is added in iMIS in between runs...
 
 	global $wpdb;
 
@@ -2613,11 +2681,6 @@ function import_imis() { 	 // fill up the wp_aeh_import & wp_aeh_import_full tab
 	// Send a POST request to ibridge
 	$result = post_request(IMIS_POST_URL, $params);
 	$result_stat = $result['status'];
-
-	print_r($result_stat);
-
-
-
 
 	$startunix = time();
 	if ($result['status'] == 'ok'){ //if no status then an error occurred.
@@ -2825,7 +2888,9 @@ function import_imis() { 	 // fill up the wp_aeh_import & wp_aeh_import_full tab
 /******************************************* CRON TO TAKE iMIS VALUES AND UPDATE WP USERS *************************************************/
 
 add_action('aeh_update_wp_users', 'update_wp_users');
-function update_wp_users() { // fill up the wp_aeh_import & wp_aeh_import_full tables from iMIS
+function update_wp_users() { 
+
+	//Updates wp account user_meta with iMIS data
 	global $wpdb;
 
 	$sql = "
@@ -2934,6 +2999,10 @@ function update_wp_users() { // fill up the wp_aeh_import & wp_aeh_import_full t
 		update_user_meta($wp_id, 'suffix', $suffix);
 		update_user_meta($wp_id, 'prefix', $prefix);
 		update_user_meta($wp_id, 'imis_verified', '1');
+		update_user_meta($wp_id, 'role', 'member');
+		//$the_user = new WP_User($wp_id); 
+		//3$the_user->set_role('member');
+
 
 		if ($password != 'XXXXXXzzzzzz'){update_user_meta($wp_id, 'aeh_password', $password); wp_set_password( $password, $wp_id );}
 
@@ -3163,20 +3232,20 @@ function find_new_wp_users() { // call this cron from 1-4 hourly
 add_action('aeh_insert_new_wp_users', 'insert_new_wp_users');
 function insert_new_wp_users(){  // call this cron about 1-4 hourly but not at the same time as the above cron
 	global $wpdb;
-
+			
 	$option = get_option('imis_users_to_add');
-
-	$ids = '';
+			
 	foreach($option as $imis_id){
-		$check = $wpdb->query("SELECT * FROM `wp_usermeta` WHERE `meta_key` = 'aeh_imis_id' AND `meta_value` = '$imis_id'"); //make sure this user doesn't already exist first
-		if (!$check){ 														// if this user has been added from iMIS to WP then skip adding this user or else do the biz
-			add_one_imis_user($imis_id);	
-			$ids = $ids . ', '. $imis_id ;								// loop here adding individual WP accounts programmatically.
+		$check  = $wpdb->query("SELECT * FROM `wp_usermeta` WHERE `meta_key` = 'aeh_imis_id' AND `meta_value` = '$imis_id'"); //make sure this user doesn't already exist first
+ 
+		if (!$check){  // if this user has been added from iMIS to WP then skip adding this user or else add
+			echo add_one_imis_user($imis_id);	
+			//echo $imis_id . "ADDED";								// loop here adding individual WP accounts programmatically.
 		}
 	}
-	$wpdb->query("INSERT INTO `test` (`name`, `value`) VALUES ('New Users Added to WP from IMIS', '$ids')");
 }
 
+//Adds new wordpress user from iMIS data
 function add_one_imis_user($imis_id){
 	global $wpdb;
 
@@ -3231,8 +3300,19 @@ function add_one_imis_user($imis_id){
 	 echo "User created : ". $wp_id;
 	}
 	else{
-		echo $email;
-		return $email;
+		$errorst = $email . " : ";
+		$user = get_user_by( 'email', $email);
+
+		$imid = get_user_meta($user->ID , 'aeh_imis_id', true);
+
+		//if email exist, but imis id is blank, reconnect imis id to wp account - possibly do this on all accounts (sync up email)
+		//if ($imid == ''){
+		 	update_user_meta($user->ID, 'aeh_imis_id', $imis_id);
+		//}
+		 
+
+		$errorst .= $user->ID . " | imisID = " . $imid . "<br>";
+		return $errorst;
 	}
 
 
@@ -3488,8 +3568,9 @@ function get_imis_tables(){
 				}
 				if($titles!= '$companies'){
 					update_option("company_list", $companies);
-					var_dump($companies);
-					echo "<br>";
+				 
+					print_r($companies);
+					 
 				}
 			}
 		}
@@ -3855,7 +3936,101 @@ add_action('pre_get_posts','hwl_home_pagesize',1);
 
 add_filter('wp_mail_from','from_mail');
     function from_mail($content_type) {
-        return 'info@essentialhospitals.org';
+        return 'cms@essentialhospitals.org';
     }
+
+function update_presentation_section( $post_id, $post ) {
+	$pt = $post->post_type; 
+ 	 
+	if ($pt == 'presentation'){
+		
+		$event = get_post_meta($post_id,'event',true);
+ 
+		$section = get_post_meta($event,'section',true);
+		update_post_meta($post_id, 'section', $section); 
+	} 
+	else{
+		return;
+	}
+
+}
+add_action( 'save_post', 'update_presentation_section', 10, 2 );
+ 
+
+
+//WYSISYG FOR COMMENTS
+ 
+add_filter( 'comment_form_field_comment', 'comment_editor' );
+ 
+function comment_editor() {
+  global $post;
+ 
+  ob_start();
+ 
+  wp_editor( '', 'comment', array(
+    'textarea_rows' => 15,
+    'teeny' => true,
+    'quicktags' => false,
+    'media_buttons' => false
+  ) );
+ 
+  $editor = ob_get_contents();
+ 
+  ob_end_clean();
+ 
+  //make sure comment media is attached to parent post
+  $editor = str_replace( 'post_id=0', 'post_id='.get_the_ID(), $editor );
+ 
+  return $editor;
+}
+ 
+// wp_editor doesn't work when clicking reply. Here is the fix.
+add_action( 'wp_enqueue_scripts', '__THEME_PREFIX__scripts' );
+function __THEME_PREFIX__scripts() {
+    wp_enqueue_script('jquery');
+}
+add_filter( 'comment_reply_link', '__THEME_PREFIX__comment_reply_link' );
+function __THEME_PREFIX__comment_reply_link($link) {
+    return str_replace( 'onclick=', 'data-onclick=', $link );
+}
+add_action( 'wp_head', '__THEME_PREFIX__wp_head' );
+function __THEME_PREFIX__wp_head() {
+?>
+<script type="text/javascript">
+  jQuery(function($){
+    $('.comment-reply-link').click(function(e){
+      e.preventDefault();
+      var args = $(this).data('onclick');
+      args = args.replace(/.*\(|\)/gi, '').replace(/\"|\s+/g, '');
+      args = args.split(',');
+      tinymce.EditorManager.execCommand('mceRemoveEditor', true, 'comment');
+      addComment.moveForm.apply( addComment, args );
+      tinymce.EditorManager.execCommand('mceAddEditor', true, 'comment');
+    });
+  });
+</script>
+<?php 
+}  
+
+
+
+if (!current_user_can('administrator')){
+function hide_post_page_options() {
+global $post;
+$hide_post_options = "<style type=\"text/css\"> .jaxtag { display: none; }</style>";
+print($hide_post_options);
+}
+add_action( 'admin_head', 'hide_post_page_options'  );
+}
+
+
+
+
+
+// more stuff
+require_once('functions/class-events.php');
+require_once('functions/class-presentations.php');    
+
+ 
 
 ?>

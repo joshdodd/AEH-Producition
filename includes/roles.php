@@ -51,6 +51,7 @@ add_action( 'after_setup_theme', 'AEH_roles_setup' );
 function AEH_user_fields( $user ) {
 	global $current_user;
 	get_currentuserinfo();
+
 	$adminRole = implode(', ',$current_user->roles);
 	$postTypes = get_post_types();
 	$staffPermission = get_the_author_meta( 'staffPermissions', $user->ID );
@@ -62,10 +63,14 @@ function AEH_user_fields( $user ) {
 	$imisid = get_user_meta($user->ID, 'aeh_imis_id', true);
 
 
+
+
+
+
 	if(($aeh_member  == 'hospital')&&($imisid != '')){
 		$imisdata = get_imis_user($imisid);
-		echo "*************************";
-		var_dump($imisdata);
+		
+		//var_dump($imisdata);
 		if($imisdata){
 			$prefix        = $imisdata['prefix'];
 			$firstname     = $imisdata['firstname'];
@@ -116,6 +121,8 @@ function AEH_user_fields( $user ) {
 			update_user_meta($userID, 'imisWebInterests', $webinterest);
 			update_user_meta($userID, 'suffix', $suffix);
 			update_user_meta($userID, 'title', $prefix);
+			update_user_meta($userID, 'role', 'member');
+			//$user->set_role('member');
 		}
 	}
 	//Hidden Fields for autofill: ?>
@@ -289,6 +296,8 @@ function AEH_user_fields( $user ) {
 					<input type="checkbox" name="staffPermissions[]" value="institute" <?php if($staffPermission){if(in_array('institute', $staffPermission)){ echo 'checked="checked"'; }} ?>> Institute<br>
 					<input type="checkbox" name="staffPermissions[]" value="group" <?php if($staffPermission){if(in_array('group', $staffPermission)){ echo 'checked="checked"'; }} ?>> Groups<br>
 					<input type="checkbox" name="staffPermissions[]" value="webinar" <?php if($staffPermission){if(in_array('webinar', $staffPermission)){ echo 'checked="checked"'; }} ?>> Webinars<br>
+					<input type="checkbox" name="staffPermissions[]" value="events" <?php if($staffPermission){if(in_array('events', $staffPermission)){ echo 'checked="checked"'; }} ?>> Events<br>
+					<input type="checkbox" name="staffPermissions[]" value="presentation" <?php if($staffPermission){if(in_array('presentation', $staffPermission)){ echo 'checked="checked"'; }} ?>> Presentations<br>
 					<input type="checkbox" name="staffPermissions[]" value="alert" <?php if($staffPermission){if(in_array('alert', $staffPermission)){ echo 'checked="checked"'; }} ?>> Alerts
 				</td>
 			</tr>
@@ -350,7 +359,7 @@ function AEH_roles_restrictions($user){
 	$staffPermission = get_the_author_meta( 'staffPermissions', $current_user->ID );
 	if(!$staffPermission){ $staffPermission = array(); }
 	$userRole = implode(', ',$current_user->roles);
-	$permArray = array('policy','quality','institute','webinar','alert','group','post','page');
+	$permArray = array('policy','quality','institute','webinar','alert','group','post','page','events','presentation','story');
 	$diffArray = array_diff($permArray,$staffPermission);
 
 	//remove menu items without permission

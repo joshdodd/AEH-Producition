@@ -110,6 +110,7 @@ $newsinterest   = get_user_meta($userID, 'custom_news_feed', true); ?>
 			  $city = $org['city'];
 			  $state = $org['state'];
               $id = $org['id'];
+              $zipc = $org['zip'];
               $sort= $org['company_sort'];
 			  $len = count($hq);
 			  for($i = 1; $i <= $len; $i++){ ?>

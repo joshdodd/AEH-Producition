@@ -33,6 +33,10 @@
 
 	 	echo "Thank you for your submission! You can access it below.";
 
+	 	email_group($newID);
+
+
+
 	 }
 
 	$currentPostID = get_the_ID();
@@ -62,7 +66,11 @@
 				</div>
 			</div>
 			<div class="group-comments">
+				<?php the_content();?>
+
 				<?php
+				//Show two recent comments
+				/*
 					$args = array(
 						'post_id' => $postid,
 					    'number'  => 2,
@@ -70,7 +78,7 @@
 					$comments = get_comments($args);
 					foreach($comments as $comment) : ?>
 						<p><?php echo $comment->comment_content; ?> | <?php comment_date('M j, g:i a'); ?></p>
-				<?php endforeach; ?>
+				<?php endforeach; */?>
 			</div>
 		</div>
 
@@ -82,8 +90,27 @@
 	<div class="gutter">
 		<h2 class="heading">Create Discussion</h2>
 				 <form id="addPost" method="post">
-					<input name="title" type="text" placeholder="title" />
-					<textarea name="description" type="textarea" placeholder="Start Discussion here"></textarea>
+					<input name="title" type="text" placeholder="Discussion Title" />
+<?php 
+$content = 'Start Discussion here';
+$editor_id = 'kv_frontend_editor';
+$settings =   array(
+    'wpautop' => true, // use wpautop?
+    'media_buttons' => false, // show insert/upload button(s)
+    'textarea_name' => "description", // set the textarea name to something different, square brackets [] can be used here
+    'textarea_rows' => 10,
+    'tabindex' => false,
+    'editor_css' => '', //  extra styles for both visual and HTML editors buttons, 
+    'editor_class' => '', // add extra class(es) to the editor textarea
+    'teeny' => true, // output the minimal editor config used in Press This
+    'dfw' => false, // replace the default fullscreen with DFW (supported on the front-end in WordPress 3.4)
+    'tinymce' => true, // load TinyMCE, can be used to pass settings directly to TinyMCE using an array()
+    'quicktags' => false // load Quicktags, can be used to pass settings directly to Quicktags using an array()
+);
+?>
+<?php wp_editor( $content, "description", $settings); ?>
+
+					<!--<textarea name="description" type="textarea" placeholder="Start Discussion here"></textarea> -->
 					<?php
 						 echo '<input name="category" type="hidden" value="'.$currentPostID.'" />';
 						 $user_ID = get_current_user_id();

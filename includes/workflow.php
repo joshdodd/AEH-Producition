@@ -9,7 +9,7 @@ function onsave_moderation($post_id){
 	}
 	//Check post type
 	$postType = get_post_type($post_id);
-	$typeArray = array('policy','quality','institute','post','page','webinar','group');
+	$typeArray = array('policy','quality','institute','post','page','webinar','group','events','presentations');
 	$editorID = $_POST['editor'];
 	$curEditor = get_post_meta($post_id,'curEdit',true);
 
@@ -58,6 +58,18 @@ function onsave_moderation($post_id){
 		//set the coauthors
 		$coauthors_plus->add_coauthors($post_id,$userArray);
 		add_post_meta($post_id,'authout',$authout,true) || update_post_meta($post_id,'authout',$authout);
+ 
+		$args = array(
+			'child_of' => $post_id,
+			'post_type' => 'group'
+		); 			
+		$pages = get_pages($args);
+		foreach($pages as $child) {
+			 $coauthors_plus->add_coauthors($child->ID,$userArray);
+			 add_post_meta($child->ID,'authout',$authout,true) || update_post_meta($child->ID,'authout',$authout);
+		}
+
+
 
 	}
 }
@@ -81,7 +93,7 @@ function next_editor(){
 	$userRole = implode(', ',$current_user->roles);
 	$postType = $post->post_type;
 	$curEdit = get_post_meta($post->ID,'curEdit',true);
-	$typeArray = array('policy','quality','institute','post','page','webinar','group');
+	$typeArray = array('policy','quality','institute','post','page','webinar','group','events','presentations');
 	if(in_array($postType, $typeArray)){
 		$output .= "<div class='misc-pub-section'><label for='editor'>Editor: </label>";
 			$editors = get_users('role=content_creator');

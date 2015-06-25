@@ -106,7 +106,7 @@
 		<table id="contact-table">
 			<thead>
 				<tr>
-					<th class="profilesearch"><input type="text" id="profile-search" value="" placeholder="Search by Name or Job Title"></th>
+					<th class="profilesearch"><input type="text" id="profile-search" value="" placeholder="Search by Name"></th>
 					<th class="sortby">Sort By:</th>
 					<th class="sortby-btn"><div data-sortby="aeh_staff" class="job-title">Association Staff</div></th>
 					<th class="sortby-btn"><select id="jobfunction">

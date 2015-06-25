@@ -87,7 +87,11 @@ jQuery(document).ready(function($){
 			            $('#contactRender').html(msg).fadeIn(200);
 			            $('#loader-gif').removeClass('active');
 			            $('#queryholder').attr('data-sortby','search');
-			        }
+			        },
+			        error: function() {
+			         	$('#contactRender').html("No Results.").fadeIn(200);
+			            $('#loader-gif').removeClass('active');
+			      	}
 			    });
 		    }
 		}, 200);

@@ -192,8 +192,91 @@
 							</div>
 						</div>
 					<?php } ?>
+					
+					<div class="panel white post short fluid">
+						<div class="graybarright"></div>
+						<div class="item-bar bluee"></div>
+						<div class="item-icon bluee">Upcoming Events
+						<img src="<?php bloginfo('template_directory'); ?>/images/icon-education.png" />
+						<img src="<?php bloginfo('template_directory'); ?>/images/icon-institute.png" /></div>
+						<?php
+						$today = mktime(0, 0, 0, date('n'), date('j'));
+						$args = array(
+							'post_type' => 'events',
+							'posts_per_page' => 3,
+							'order' => 'asc',
+							'post_status' => 'publish',
+							'meta_query'  => array(
+								'relation' => 'AND',
+								array(
+									'key' => 'date',
+									'value' => $today,
+									'compare' => '>=' 
+								),
+								array(
+									'key' => 'section',
+									'value' => 'institute',
+									'compare' => '=' 
+								)
+							),
+							'orderby' => 'meta_value',
+							'meta_key' => 'date',
+						);
+						$query = new WP_Query($args);
 
-					<div class="panel white post short fluid stamp anotherreallyspecificnichesituation">
+						if ( $query->have_posts() ) { while ( $query->have_posts() ) { 
+							$query->the_post();
+							$postType = get_field('section');
+							$date = get_post_meta( get_the_ID(), 'date', 'true');
+							//check post type and apply a color
+							if($postType =='policy'){
+								$postColor = 'redd';
+							}else if($postType =='quality'){
+								$postColor = 'greenn';
+							}else if($postType =='education'){
+								$postColor = 'grayy';
+							}else if($postType =='institute'){
+								$postColor = 'bluee';
+							}else{
+								$postColor = 'redd';
+							} ?>
+							<div class="entry webinar">
+								<div class="gutter clearfix">
+									<div class="entry-content">
+										<p>
+											<div class="title <?php echo $postColor; ?>">
+												<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+											</div> 
+											<span class="date"><?php echo date('M j, Y', $date);?>
+											</span> | 
+											<span class="excerpt"><?php $exc = get_the_excerpt(); echo substr($exc, 0, 50); ?>
+											</span>
+										</p>
+									</div>
+								</div>
+							</div>
+						<?php }
+						echo '<a class="readmore" href="'.get_post_type_archive_link('events').'/?timeFilter=future">All Upcoming Events &raquo;</a>';
+						} 
+						else{ ?>
+							<div class="entry webinar">
+								<div class="gutter clearfix">
+									<div class="entry-content">
+										<p>
+											There are no upcoming Institue events. Please check back soon!
+										</p>
+									</div>
+								</div>
+							</div>
+
+
+
+						<?php } ?>
+						<div class="bot-border"></div>
+					</div>
+
+
+					<div class="panel white post short fluid stamp ">
 						<div class="graybarright"></div>
 						<div class="item-bar bluee"></div>
 						<div class="item-icon bluee">Webinars
@@ -258,9 +341,18 @@
 							</div>
 						<?php }
 						echo '<a class="readmore" href="'.get_post_type_archive_link('webinar').'/?timeFilter=future">All Upcoming Webinars &raquo;</a>';
-						}else{
-							echo '<p>No Upcoming Webinars</p>';
-						} ?>
+						}else{?>
+
+							<div class="entry webinar">
+								<div class="gutter clearfix">
+									<div class="entry-content">
+										<p>There are no upcoming Institue webinars. Please check back soon!</p>
+									</div>
+								</div>
+							</div>
+
+							 
+						<?php } ?>
 						<div class="bot-border"></div>
 					</div>
 
@@ -325,7 +417,7 @@
 						$rand_key = array_rand($layoutArray, 1);
 						$sticky_test = get_the_ID();
 					?>
-							<div class="notrunc post long columns fluid clearfix wide bluee institute widthcheck">
+							<div class="notrunc post long columns fluid clearfix wide bluee institute widthcheck ">
 								<div class="graybarright"></div>
 					  			<div class="item-bar"></div>
 				    			<div class="item-icon">

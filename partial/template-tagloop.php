@@ -1,6 +1,6 @@
 <div style="display:none;">
-	<?php global $wp_query;
- var_dump($wp_query->found_posts); ?>
+	<?php global $wp_query; global $query_string;
+ ?>
 </div>
 <div id="postBox" class="clearfix stream-type">
 
@@ -8,13 +8,23 @@
 	<div id="loader-gif"> Loading more articles</div>
 			<div class="items">
 			<?php
+ 
+			query_posts( $query_string . '&post_type=any' );
 			if ( have_posts() ) while ( have_posts() ) : the_post();
 				$postType = get_post_type( get_the_ID() );
+				$presType = false;
+
+				if($postType == 'presentation'){
+					$presType = true;
+					$event = get_post_meta(get_the_ID(),'event',true);
+					$file_link = get_post_meta(get_the_ID(),'file',true);
+					$postType = get_post_meta($event,'section',true);
+					
+				}
 
 				if($postType == 'general'){
 					$postType = $term_meta['section'];
 				}
-
 				//check post type and apply a color
 				if($postType == 'policy'){
 					$postColor = 'redd';
@@ -46,9 +56,9 @@
     			</div>
     			<div class="item-content">
 	    			<div class="item-header">
-	    				<h2><a href="<?php if(get_field('link_to_media')){the_field('uploaded_file');}else{the_permalink();} ?>"><?php the_title(); ?></a></h2>
+	    				<h2><a href="<?php if(get_field('link_to_media')){the_field('uploaded_file');}elseif($presType){echo wp_get_attachment_url($file_link);}else{the_permalink();} ?>"><?php the_title(); ?></a></h2>
 	    				<span class="item-date"><?php the_time('M j, Y'); ?> ||</span>
-	    				<span class="item-author"><a href="<?php echo get_author_posts_url(get_the_author_meta('ID')); ?>/?prof=article"><?php the_author(); ?></a></span>
+	    				<?php if(!$presType){ ?><span class="item-author"><a href="<?php echo get_author_posts_url(get_the_author_meta('ID')); ?>/?prof=article"><?php the_author(); ?></a></span> <?php  }?>
 	    			</div>
 	    			<?php if(get_field('link_to_media')){ ?>
 						<a href="<?php the_field('uploaded_file'); ?>"><img src="<?php bloginfo('template_directory'); ?>/images/<?php echo $postType; ?>-doc.png" /></a>
@@ -74,7 +84,7 @@
 
 						 ?>
 
-					</p><a class="more" href="<?php the_permalink(); ?>"> view more » </a>
+					</p><a class="more" href="<?php if($presType){echo wp_get_attachment_url($file_link);}else{the_permalink();}  ?>"> view more » </a>
 					<?php } ?>
 	    			<div class="item-tags">
 	    				<?php $tags = get_the_terms(get_the_ID(),'post_tag');

@@ -159,7 +159,7 @@
 						<div class='item-header'>
 							<h2>No Webinars Found</h2>
 						</div>
-						<p>Sorry, there were no $timeEx found under $ajaxFilter. Try another filter!</p>
+						<p>Sorry, there were no $timeEx found. Try another filter!</p>
 					</div>
 					<div class='bot-border'></div>
 				   </div>";
