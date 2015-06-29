@@ -16,6 +16,7 @@ function AEH_roles_setup(){
 		'delete_published_posts'   => true,
 		'edit_posts'			   => true,
 		'edit_published_posts'	   => true,
+		'manage_categories'	   	   => false,
 		//'edit_published_webinars'  => true,
 		//'edit_others_posts'		   => true,
 		//'edit_others_webinars'	   => true,

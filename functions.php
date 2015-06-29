@@ -4013,7 +4013,7 @@ function __THEME_PREFIX__wp_head() {
 }  
 
 
-
+/*
 if (!current_user_can('administrator')){
 function hide_post_page_options() {
 global $post;
@@ -4021,6 +4021,59 @@ $hide_post_options = "<style type=\"text/css\"> .jaxtag { display: none; }</styl
 print($hide_post_options);
 }
 add_action( 'admin_head', 'hide_post_page_options'  );
+}
+*/
+
+add_action('create_term','undo_create_term',10, 3);
+
+function undo_create_term ($term_id, $tt_id, $taxonomy) {
+    if ( !current_user_can( 'administrator' ) )  {
+        if($taxonomy == 'post_tag') {
+        	wp_delete_term($term_id,$taxonomy);
+        }
+    }
+}
+
+//add_filter( 'wp_tag_cloud', 'my_admin_tag_cloud_args' );
+function my_admin_tag_cloud_args( $args ) {
+ 
+	$args = array(
+		'smallest' => 9, 'largest' => 9, 'unit' => 'pt', 'number' => 400,
+		'format' => 'flat', 'separator' => "\n", 'orderby' => 'name', 'order' => 'ASC',
+		'exclude' => '', 'include' => '', 'link' => 'view', 'taxonomy' => 'post_tag', 'echo' => true
+	);
+	$args = wp_parse_args( $args, $defaults );
+	$tags = get_terms( $args['taxonomy'], array_merge( $args, array( 'orderby' => 'count', 'order' => 'DESC' ) ) ); // Always query top tags
+
+	if ( empty( $tags ) )
+		return;
+
+	foreach ( $tags as $key => $tag ) {
+		if ( 'edit' == $args['link'] )
+			$link = get_edit_tag_link( $tag->term_id, $args['taxonomy'] );
+		else
+			$link = get_term_link( intval($tag->term_id), $args['taxonomy'] );
+		if ( is_wp_error( $link ) )
+			return false;
+
+		$tags[ $key ]->link = $link;
+		$tags[ $key ]->id = $tag->term_id;
+	}
+
+	$return = wp_generate_tag_cloud( $tags, $args ); // Here's where those top tags get sorted according to $args
+
+	$return = apply_filters( 'my_tag_cloud', $return, $args );
+
+	if ( 'array' == $args['format'] || empty($args['echo']) )
+		return $return;
+
+	echo $return;
+
+ 
+
+
+
+
 }
 
 
